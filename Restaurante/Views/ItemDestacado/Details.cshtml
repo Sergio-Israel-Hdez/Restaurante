@@ -1,0 +1,22 @@
+﻿@model Restaurante.Models.DB.ItemDestacado
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1></h1>
+<div class="card" style="width: 18rem;">
+    @if (Model.Foto != null)
+    {
+        <img class="card-img-top" width="200" height="200" src="data:image/jpg;base64,@Convert.ToBase64String(Model.Foto)" />
+    }
+    else
+    {
+        <span>Sin Foto</span>
+    }
+    <div class="card-body">
+        <p class="card-text">@Model.Descripcion</p>
+        <a class="btn btn-info" asp-action="Edit" asp-controller="ItemDestacado" asp-route-id="@Model.ItemDestacadoId">Edit</a>
+    </div>
+</div>
+<a asp-action="Details" asp-controller="Administrador" asp-route-id="@Model.RestauranteId">Regresar</a>

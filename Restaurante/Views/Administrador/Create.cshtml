@@ -1,0 +1,48 @@
+﻿@model Restaurante.Models.DB.Restaurante
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="display-4">Agregar Restaurante</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NombreRestaurante" class="control-label"></label>
+                <input asp-for="NombreRestaurante" class="form-control" />
+                <span asp-validation-for="NombreRestaurante" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HoraApertura" class="control-label"></label>
+                <input asp-for="HoraApertura" class="form-control" />
+                <span asp-validation-for="HoraApertura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraCierre" class="control-label"></label>
+                <input asp-for="HoraCierre" class="form-control" />
+                <span asp-validation-for="HoraCierre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input type="file" id="files" asp-for="Logo"/>
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

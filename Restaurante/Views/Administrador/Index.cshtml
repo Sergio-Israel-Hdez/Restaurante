@@ -1,0 +1,112 @@
+﻿@model IPagedList<Restaurante.Models.DB.Restaurante>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Mvc.Core.Common
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="display-4 text-center">Lista restaurantes</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Agregar Restaurante</a>
+</p>
+<div class="text-right form-inline">
+    <form method="get" action=@Url.Action("Index","Administrador")>
+        <div class="btn-group" role="group">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Ordenar por
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li> @Html.ActionLink("Votos", "Index", new { orden = ViewBag.ordenVotos })</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Registro", "Index", new { orden = ViewBag.ordenid })</li>
+            </ul>
+        </div>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nombre Restaurante
+            </th>
+            <th>
+                Logo
+            </th>
+            <th>
+                Hora Apertura
+            </th>
+            <th>
+                Hora Cierre
+            </th>
+            <th>
+                Cantidad de votos
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreRestaurante)
+                </td>
+                <td>
+                    @{
+                        if (item.Logo != null)
+                        {
+                            <img class="img-fluid img-thumbnail " width="200" height="400" src="data:image/jpg;base64,@Convert.ToBase64String(item.Logo)" />
+                        }
+                        else
+                        {
+                            <span>Sin Foto</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraApertura)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraCierre)
+                </td>
+                <td>
+                    @{
+                        if (item.RestauranteVotaciones.Count == 0)
+                        {
+                            <span>Sin Votos</span>
+                        }
+                        else
+                        {
+                            <span>@item.RestauranteVotaciones.Count</span>
+                        }
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.RestauranteId">Edit</a> |
+                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.RestauranteId">Details</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.RestauranteId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<div class="row">
+    <div class="col float-left">
+        Pagina @(Model.PageCount<Model.PageNumber ? 0:Model.PageNumber) de @Model.PageCount
+    </div>
+    <div class="col float-right">
+        @Html.PagedListPager(Model, page =>
+            Url.Action("Index", new { page = page }),
+            new PagedListRenderOptions
+                 {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+        })
+    </div>
+</div>
